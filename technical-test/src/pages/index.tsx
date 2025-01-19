@@ -3,6 +3,7 @@ import PostItem from '../components/PostItem';
 import styled from 'styled-components';
 import { Post } from '../types';
 import { useRouter } from 'next/navigation';
+import { fetchPosts as fetchPostsApi } from '../api/api';
 
 const PageContainer = styled.div`
   display: flex;
@@ -19,9 +20,8 @@ const Home: React.FC = () => {
   const router = useRouter();
 
   const fetchPosts = useCallback(async () => {
-    const response = await fetch(`https://dummyjson.com/recipes?limit=10&skip=${(page - 1) * 10}`);
-    const data = await response.json();
-    setPosts((prevPosts) => [...prevPosts, ...data.recipes]);
+    const newPosts = await fetchPostsApi(page);
+    setPosts((prevPosts) => [...prevPosts, ...newPosts]);
   }, [page]);
 
   useEffect(() => {
