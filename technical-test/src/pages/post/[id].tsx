@@ -30,6 +30,13 @@ const BodyText = styled.p`
   text-align: center;
 `;
 
+const BackButton = styled.button`
+  margin-top: 16px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+`;
+
 const PostDetails: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -56,6 +63,10 @@ const PostDetails: React.FC = () => {
     }
   };
 
+  const handleBackClick = () => {
+    router.back();
+  };
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -69,6 +80,7 @@ const PostDetails: React.FC = () => {
       <PostImage src={post.image} alt={post.name} />
       <Name>{post.name}</Name>
       <BodyText>{post.instructions.join('\n')}</BodyText>
+      <BackButton onClick={handleBackClick}>Back</BackButton>
     </PostContainer>
   );
 };

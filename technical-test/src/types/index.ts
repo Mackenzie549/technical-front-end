@@ -2,8 +2,7 @@ export type Post = {
     id: number;
     name: string;
     image: string;
-    instructions: [string];
-    body: string;
+    instructions: string[];
   };
 
 export interface PostItemProps {
