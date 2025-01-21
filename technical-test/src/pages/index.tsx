@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PostItem from '../components/PostItem';
 import styled from 'styled-components';
@@ -6,7 +6,7 @@ import { Post } from '../types';
 import { useRouter } from 'next/router';
 import { fetchPosts as fetchPostsApi } from '../api/api';
 import { RootState } from '../redux/store';
-import { addPosts, setPage, setLoading, setHasMore } from '../redux/slices/postsSlice';
+import { setPosts, addPosts, setPage, setLoading, setHasMore } from '../redux/slices/postsSlice';
 
 const PageContainer = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
   const router = useRouter();
   const loader = useRef<HTMLDivElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
-
+  const [highlightedPostId, setHighlightedPostId] = useState<number | null>(null);
 
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -80,6 +80,24 @@ const Home: React.FC = () => {
       fetchPosts();
     }
   }, [page]);
+
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8080');
+
+    ws.onmessage = (event) => {
+      const newPost = JSON.parse(event.data);
+      dispatch(setPosts([newPost, ...posts]));
+      setHighlightedPostId(newPost.id);
+
+      setTimeout(() => {
+        setHighlightedPostId(null);
+      }, 5000); // Highlight for 5 seconds
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [dispatch, posts]);
 
   const handleClick = (post: Post) => {
     router.push(`/post/${post.id}`);

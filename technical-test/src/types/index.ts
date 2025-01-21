@@ -8,4 +8,5 @@ export type Post = {
 export interface PostItemProps {
     post: Post;
     onClick: (post: Post) => void;
+    style?: React.CSSProperties;
 }

@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "predev": "tsc",
+    "dev": "concurrently \"npm run dev:next\" \"npm run dev:server\"",
+    "dev:next": "next dev",
+    "dev:server": "node dist/server.js",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
@@ -22,6 +25,7 @@
     "@types/node": "^22.10.7",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
+    "concurrently": "^9.1.2",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "typescript": "^5.7.3"

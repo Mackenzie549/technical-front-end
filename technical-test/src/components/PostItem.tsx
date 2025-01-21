@@ -10,7 +10,7 @@ const PostContainer = styled.div`
   display: grid;
   grid-template-columns: 50px 1fr;
   gap: 12px;
-  max-width: 500px;
+  width: 500px;
   height: 150px;
   &:hover {
     border: 1px solid yellow;
@@ -38,13 +38,16 @@ const BodyText = styled.p`
   text-overflow: ellipsis;
 `;
 
-const PostItem: React.FC<PostItemProps> = ({ post, onClick }) => {
+const PostItem: React.FC<PostItemProps> = ({ post, onClick, style }) => {
   return (
-    <PostContainer data-testid={`PostItem-${post.id}`} onClick={() => onClick(post)}>
-      <Avatar src={post.image} alt={post.name} />
-      <Name>{post.name}</Name>
-      <BodyText>{post.instructions.join(' ')}</BodyText>
-    </PostContainer>
+    <span style={style}>
+      <PostContainer data-testid={`PostItem-${post.id}`} onClick={() => onClick(post)}>
+        <Avatar src={post.image} alt={post.name} />
+        <Name>{post.name}</Name>
+        <BodyText>{post.instructions.join(' ')}</BodyText>
+      </PostContainer>
+    </span>
+    
   );
 };
 
