@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import React from 'react';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
 import PostItem from '../components/PostItem';
-import { setPosts } from '../redux/slices/postsSlice';
-import { Post } from '../types';
 import useInfiniteLoading from '../hooks/useInfiniteLoading';
+import useWebSocket from '../hooks/useWebSocket';
+import { Post } from '../types';
 
 const PageContainer = styled.div`
   display: flex;
@@ -16,28 +15,9 @@ const PageContainer = styled.div`
 `;
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const { loader, posts, hasMore } = useInfiniteLoading();
-  const [highlightedPostId, setHighlightedPostId] = useState<number | null>(null);
-
-  useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080');
-
-    ws.onmessage = (event) => {
-      const newPost = JSON.parse(event.data);
-      dispatch(setPosts([newPost, ...posts]));
-      setHighlightedPostId(newPost.id);
-
-      setTimeout(() => {
-        setHighlightedPostId(null);
-      }, 5000); // Highlight for 5 seconds
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, [dispatch, posts]);
+  const { highlightedPostId } = useWebSocket('ws://localhost:8080');
 
   const handleClick = (post: Post) => {
     router.push({
@@ -49,7 +29,12 @@ const Home: React.FC = () => {
   return (
     <PageContainer>
       {posts.map((post) => (
-        <PostItem key={post.id} post={post} onClick={handleClick} />
+        <PostItem
+          key={post.id}
+          post={post}
+          onClick={handleClick}
+          isHighlighted={post.id === highlightedPostId}
+        />
       ))}
       {hasMore && <div ref={loader} />} {/* Loader is removed if no more posts */}
     </PageContainer>

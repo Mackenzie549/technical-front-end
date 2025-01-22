@@ -2,8 +2,10 @@ import { PostItemProps } from '../types/index';
 import React from 'react';
 import styled from 'styled-components';
 
-const PostContainer = styled.div`
-  border: 1px solid #ccc;
+const PostContainer = styled.div<{isHighlighted: Boolean}>`
+  background-color: ${({ isHighlighted }) => (isHighlighted ? `white` : `black`)};
+  color: ${({ isHighlighted }) => (isHighlighted ? `black` : `white`)};
+  border: ${({ isHighlighted }) => (isHighlighted ? `1px solid red` : `1px solid white`)};
   border-radius: 8px;
   padding: 16px;
   cursor: pointer;
@@ -38,16 +40,13 @@ const BodyText = styled.p`
   text-overflow: ellipsis;
 `;
 
-const PostItem: React.FC<PostItemProps> = ({ post, onClick, style }) => {
+const PostItem: React.FC<PostItemProps> = ({ post, onClick, isHighlighted=false }) => {
   return (
-    <span style={style}>
-      <PostContainer data-testid={`PostItem-${post.id}`} onClick={() => onClick(post)}>
+      <PostContainer data-testid={`PostItem-${post.id}`} onClick={() => onClick(post)} isHighlighted={isHighlighted}>
         <Avatar src={post.image} alt={post.name} />
         <Name>{post.name}</Name>
         <BodyText>{post.instructions.join(' ')}</BodyText>
       </PostContainer>
-    </span>
-    
   );
 };
 
