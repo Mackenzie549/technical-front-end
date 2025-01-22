@@ -27,16 +27,16 @@ const Home: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer data-testid={"HomeContainer"}>
       {posts.map((post) => (
         <PostItem
           key={post.id}
           post={post}
           onClick={handleClick}
-          isHighlighted={post.id === highlightedPostId}
+          highlighted={post.id === highlightedPostId}
         />
       ))}
-      {hasMore && <div ref={loader} />} {/* Loader is removed if no more posts */}
+      {hasMore && <div ref={loader} data-testid={"HomeLoader"} />} {/* Loader is removed if no more posts */}
     </PageContainer>
   );
 };

@@ -28,6 +28,7 @@ const Name = styled.h3`
 const BodyText = styled.p`
   margin: 0 48px;
   text-align: center;
+  max-width: 1000px;
 `;
 
 const BackButton = styled.button`

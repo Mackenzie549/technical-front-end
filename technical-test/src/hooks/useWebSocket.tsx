@@ -31,7 +31,6 @@ const useWebSocket = (url: string) => {
 
   useEffect(() => {
     const ws = new WebSocket(url);
-
     ws.onmessage = (event) => {
       try {
         const newPost = JSON.parse(event.data);

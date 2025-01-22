@@ -2,10 +2,10 @@ import { PostItemProps } from '../types/index';
 import React from 'react';
 import styled from 'styled-components';
 
-const PostContainer = styled.div<{isHighlighted: Boolean}>`
-  background-color: ${({ isHighlighted }) => (isHighlighted ? `white` : `black`)};
-  color: ${({ isHighlighted }) => (isHighlighted ? `black` : `white`)};
-  border: ${({ isHighlighted }) => (isHighlighted ? `1px solid red` : `1px solid white`)};
+const PostContainer = styled.div<{ highlighted: boolean }>`
+  background-color: ${({ highlighted }) => (highlighted ? 'white' : 'black')};
+  color: ${({ highlighted }) => (highlighted ? 'black' : 'white')};
+  border: ${({ highlighted }) => (highlighted ? '1px solid red' : '1px solid white')};
   border-radius: 8px;
   padding: 16px;
   cursor: pointer;
@@ -40,13 +40,23 @@ const BodyText = styled.p`
   text-overflow: ellipsis;
 `;
 
-const PostItem: React.FC<PostItemProps> = ({ post, onClick, isHighlighted=false }) => {
+const PostItem: React.FC<PostItemProps> = ({ post, onClick, highlighted = false }) => {
   return (
-      <PostContainer data-testid={`PostItem-${post.id}`} onClick={() => onClick(post)} isHighlighted={isHighlighted}>
-        <Avatar src={post.image} alt={post.name} />
-        <Name>{post.name}</Name>
-        <BodyText>{post.instructions.join(' ')}</BodyText>
-      </PostContainer>
+    <PostContainer
+      data-testid={`PostItem-${post.id}`}
+      onClick={() => onClick(post)}
+      highlighted={highlighted}
+    >
+      <Avatar
+        data-testid={`PostItem-${post.id}-Avatar`}
+        src={post.image}
+        alt={post.name}
+      />
+      <Name data-testid={`PostItem-${post.id}-Name`}>{post.name}</Name>
+      <BodyText data-testid={`PostItem-${post.id}-BodyText`}>
+        {post.instructions.join(' ')}
+      </BodyText>
+    </PostContainer>
   );
 };
 
