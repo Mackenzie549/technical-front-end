@@ -4,6 +4,8 @@ import { fetchPosts as fetchPostsApi } from '../api/api';
 import { RootState } from '../redux/store';
 import { addPosts, setPage, setLoading, setHasMore } from '../redux/slices/postsSlice';
 
+// One of the requirements was to implement infinite scrolling
+// I made this hook to handle that logic and manage the posts state in the redux store
 const useInfiniteLoading = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state: RootState) => state.posts.posts);
@@ -13,6 +15,7 @@ const useInfiniteLoading = () => {
   const loader = useRef<HTMLDivElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
 
+  // This function fetches posts from the API
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore) return;
     dispatch(setLoading(true));
@@ -31,18 +34,21 @@ const useInfiniteLoading = () => {
     }
   }, [page, loading, hasMore, dispatch]);
 
+  // Fetch posts when the page loads
   useEffect(() => {
     if (posts.length === 0) {
       fetchPosts();
     }
   }, [fetchPosts, posts.length]);
 
+  // Every time there is a new page, fetch more posts
   useEffect(() => {
     if (page > 1) {
       fetchPosts();
     }
   }, [page]);
 
+  // Use an IntersectionObserver to detect when the loader is in view
   useEffect(() => {
     if (observer.current) observer.current.disconnect();
 

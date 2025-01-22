@@ -16,9 +16,13 @@ const PageContainer = styled.div`
 
 const Home: React.FC = () => {
   const router = useRouter();
+  // I wanted to keep the index page short and succinct, so I moved the logic to separate hooks.
+  // This way, the logic can be reused in other components. And is easier to test.
   const { loader, posts, hasMore } = useInfiniteLoading();
   const { highlightedPostId } = useWebSocket('ws://localhost:8080');
 
+  // I decided to push the post object to the router query
+  // This way, the post object can be accessed in the post page without making another api call
   const handleClick = (post: Post) => {
     router.push({
       pathname: `/post/${post.id}`,

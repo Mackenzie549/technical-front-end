@@ -1,11 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface Post {
-  id: number;
-  name: string;
-  image: string;
-  instructions: string[];
-}
+import { Post } from '../../types';
 
 interface PostsState {
   posts: Post[];
@@ -21,6 +15,8 @@ const initialState: PostsState = {
   hasMore: true,
 };
 
+// I created a postsSlice to manage the posts state in the Redux store
+// The slice contains actions to set the posts, add posts, set the page, set loading state, and set hasMore state mostly to be used in my hooks
 const postsSlice = createSlice({
   name: 'posts',
   initialState,

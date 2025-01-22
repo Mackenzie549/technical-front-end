@@ -40,6 +40,12 @@ const BodyText = styled.p`
   text-overflow: ellipsis;
 `;
 
+// This is my iterable PostItem component that will be used to map and display the posts from the API
+// I used styled-components in this as I feel it gives the most flexibility in styling and helps with the readability of the code
+// Also added a highlighted prop to the PostContainer styled component to change the background color of the post for the 
+// highlighted post logic to come
+
+// I added a data-testid to each element in the component to make it easier to test
 const PostItem: React.FC<PostItemProps> = ({ post, onClick, highlighted = false }) => {
   return (
     <PostContainer

@@ -38,10 +38,12 @@ const BackButton = styled.button`
   cursor: pointer;
 `;
 
+// This is the PostPage component that will be used to display the post that was clicked on
 const PostPage: React.FC = () => {
   const router = useRouter();
   const [post, setPost] = useState<Post | null>(null);
 
+  // When the component loads, check if there is a post object in the router query then populate the post state
   useEffect(() => {
     if (router.query.post) {
       setPost(JSON.parse(router.query.post as string));
