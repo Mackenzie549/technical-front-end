@@ -37,52 +37,28 @@ const BackButton = styled.button`
   cursor: pointer;
 `;
 
-const PostDetails: React.FC = () => {
+const PostPage: React.FC = () => {
   const router = useRouter();
-  const { id } = router.query;
   const [post, setPost] = useState<Post | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      fetchPost();
+    if (router.query.post) {
+      setPost(JSON.parse(router.query.post as string));
     }
-  }, [id]);
-
-  const fetchPost = async () => {
-    setIsLoading(true);
-    const postId = parseInt(id as string);
-    try {
-      const response = await fetch(`https://dummyjson.com/recipes/${postId}`);
-      const data = await response.json();
-      setPost(data);
-    } catch (error) {
-      console.error('Error fetching post:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleBackClick = () => {
-    router.back();
-  };
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  }, [router.query.post]);
 
   if (!post) {
-    return <p>Post not found</p>;
+    return <div>No post selected</div>;
   }
 
   return (
     <PostContainer>
       <PostImage src={post.image} alt={post.name} />
       <Name>{post.name}</Name>
-      <BodyText>{post.instructions.join('\n')}</BodyText>
-      <BackButton onClick={handleBackClick}>Back</BackButton>
+      <BodyText>{post.instructions.join(' ')}</BodyText>
+      <BackButton onClick={() => router.back()}>Back</BackButton>
     </PostContainer>
   );
 };
 
-export default PostDetails;
+export default PostPage;
