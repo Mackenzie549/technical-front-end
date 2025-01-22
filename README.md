@@ -49,5 +49,3 @@ Run the following command to execute the test suite:
 `npm test`
 To run tests in watch mode, use the following command:
 `npm run test:watch`
-
-There are some console errors in the jest test suite, that i ran out of time to complete, these would be were I would immediately address if i were to come back to this project
